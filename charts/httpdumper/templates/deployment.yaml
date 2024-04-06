@@ -64,7 +64,7 @@ spec:
             value: {{ .Values.dumper.logVerbosity | default "http_dumper=info,tower_http=info" }}
           - name: HTTP_DUMPER_PORT
             value: "8080"
-          {{- if .Values.transformer.tls.secret }}
+          {{- if .Values.dumper.tls.secret }}
           - name: "HTTP_DUMPER_TLS_CERT"
             value: "/app/ssl/dumper.crt"
           - name: "HTTP_DUMPER_TLS_KEY"
