@@ -13,3 +13,9 @@ helm install http-dumper http-dumper/httpdumper
 ```
 
 See [values.yaml](charts/kubepulse/values.yaml) for a comprehensive list of values that can be set.
+
+## Development
+
+1. `make build-bin`
+2. `make build-image`
+3. `make push-image`
