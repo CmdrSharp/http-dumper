@@ -1,5 +1,7 @@
+use crate::middleware::{print_request_body, BufferRequestBody};
 use axum::{
     http::{HeaderMap, Method, Uri},
+    middleware,
     routing::{delete, get, head, options, patch, post},
     Router,
 };
@@ -9,12 +11,19 @@ use nu_ansi_term::Color::Green;
 pub fn create_router() -> Router {
     Router::new()
         .route("/health", get(health))
-        .route("/*W", post(handler))
+        .route("/", get(handler))
         .route("/*W", get(handler))
-        .route("/*W", patch(|| async move { "PATCH /" }))
-        .route("/*W", delete(|| async move { "DELETE /" }))
-        .route("/*W", options(|| async move { "OPTIONS /" }))
-        .route("/*W", head(|| async move { "HEAD /" }))
+        .route("/", post(handler))
+        .route("/*W", post(handler))
+        .route("/", patch(handler))
+        .route("/*W", patch(handler))
+        .route("/", delete(handler))
+        .route("/*W", delete(handler))
+        .route("/", options(handler))
+        .route("/*W", options(handler))
+        .route("/", head(handler))
+        .route("/*W", head(handler))
+        .layer(middleware::from_fn(print_request_body))
         .route(
             "/favicon.ico",
             get(|| async move { "Favicon request ignored" }),
@@ -22,13 +31,18 @@ pub fn create_router() -> Router {
 }
 
 /// Request handler
-async fn handler(uri: Uri, method: Method, headers: HeaderMap, body: String) -> &'static str {
+async fn handler(
+    uri: Uri,
+    method: Method,
+    headers: HeaderMap,
+    BufferRequestBody(body): BufferRequestBody,
+) -> &'static str {
     let method_str = Green.bold().paint(format!("{:?}", method));
     let headers_str = Green.bold().paint("Headers:");
     let body_str = Green.bold().paint("Body:");
 
     tracing::info!(
-        "\n{} {}\n{}\n{:?}\n{}\n{}",
+        "\n{} {}\n{}\n{:?}\n{}\n{:?}",
         method_str,
         uri,
         headers_str,

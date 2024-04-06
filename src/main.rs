@@ -3,6 +3,7 @@ use axum_server::tls_rustls::RustlsConfig;
 use clap::Parser;
 use std::{env, net::SocketAddr, path::PathBuf};
 
+mod middleware;
 mod router;
 
 #[derive(Parser, Debug)]
@@ -63,7 +64,7 @@ async fn main() {
         let addr: SocketAddr = SocketAddr::from(([0, 0, 0, 0], args.port));
         tracing::info!("Listening on {}", addr);
 
-        axum::Server::bind(&addr)
+        axum_server::bind(addr)
             .serve(app.into_make_service_with_connect_info::<SocketAddr>())
             .await
             .unwrap();
