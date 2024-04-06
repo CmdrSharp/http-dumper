@@ -46,10 +46,16 @@ spec:
             httpGet:
               path: /health
               port: http
+              {{- if .Values.dumper.tls.secret }}
+              scheme: HTTPS
+              {{- end }}
           readinessProbe:
             httpGet:
               path: /health
               port: http
+              {{- if .Values.dumper.tls.secret }}
+              scheme: HTTPS
+              {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- if .Values.dumper.tls.secret }}
