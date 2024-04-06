@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  httpdumper:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2024-04-06T18:35:33.255562254Z"
+    description: Application to dump and read HTTP Requests
+    digest: 073e09a283c8c9cddf42af70798e29851cf6b601ca9557eea467264c5e83e729
+    name: httpdumper
+    type: application
+    urls:
+    - https://github.com/CmdrSharp/http-dumper/releases/download/httpdumper-0.1.0/httpdumper-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-04-06T18:35:33.255568405Z"
