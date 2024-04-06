@@ -8,7 +8,7 @@ mod router;
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
-    #[arg(short, long, default_value_t = 80, value_parser = clap::value_parser!(u16).range(1..), env = "HTTP_DUMPER_PORT")]
+    #[arg(short, long, default_value_t = 8080, value_parser = clap::value_parser!(u16).range(1..), env = "HTTP_DUMPER_PORT")]
     port: u16,
 }
 
