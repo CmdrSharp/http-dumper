@@ -9,7 +9,7 @@ dumper:
     secret: ""
 
 image:
-  repository: quay.io/duk4s/kubepulse
+  repository: quay.io/duk4s/httpdumper
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   # tag: ""
