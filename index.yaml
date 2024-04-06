@@ -3,6 +3,16 @@ entries:
   httpdumper:
   - apiVersion: v2
     appVersion: 0.1.1
+    created: "2024-04-06T19:24:32.61876051Z"
+    description: Application to dump and read HTTP Requests
+    digest: a6d400fc31d7a1e7cb6f205654adc548aaff2e57b05c6ee2108daba132e6f8dc
+    name: httpdumper
+    type: application
+    urls:
+    - https://github.com/CmdrSharp/http-dumper/releases/download/httpdumper-0.1.2/httpdumper-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 0.1.1
     created: "2024-04-06T19:03:23.948240389Z"
     description: Application to dump and read HTTP Requests
     digest: 868c189001e0dd5ed33f42d38259770c19856a2e75008d0f31c0caa7f20b1970
@@ -21,4 +31,4 @@ entries:
     urls:
     - https://github.com/CmdrSharp/http-dumper/releases/download/httpdumper-0.1.0/httpdumper-0.1.0.tgz
     version: 0.1.0
-generated: "2024-04-06T19:03:23.948250407Z"
+generated: "2024-04-06T19:24:32.618775328Z"
