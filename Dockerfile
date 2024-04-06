@@ -31,6 +31,4 @@ RUN chown dumper:dumper /usr/local/bin/http_dumper
 
 # Run as non-root
 USER http_dumper
-EXPOSE 80/tcp
-EXPOSE 443/tcp
 CMD ["/usr/local/bin/http_dumper"]
