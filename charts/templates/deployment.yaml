@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "httpdumper.fullname" . }}
+  labels:
+    {{- include "httpdumper.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "httpdumper.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "httpdumper.selectorLabels" . | nindent 8 }}
+        {{- toYaml .Values.podLabels | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- if .Values.dumper.tls.secret }}
+      volumes:
+        - name: dumper-ssl
+          secret:
+            secretName: "{{ .Values.dumper.tls.secret }}"
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- if .Values.dumper.tls.secret }}
+          volumeMounts:
+            - mountPath: "/app/ssl"
+              name: dumper-ssl
+              readOnly: true
+          {{- end }}
+          env:
+          - name: RUST_LOG
+            value: {{ .Values.dumper.logVerbosity | default "http_dumper=info,tower_http=info" }}
+          - name: HTTP_DUMPER_PORT
+            value: "8080"
+          {{- if .Values.transformer.tls.secret }}
+          - name: "HTTP_DUMPER_TLS_CERT"
+            value: "/app/ssl/dumper.crt"
+          - name: "HTTP_DUMPER_TLS_KEY"
+            value: "/app/ssl/dumper.key"
+          {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
