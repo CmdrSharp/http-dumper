@@ -65,9 +65,9 @@ spec:
             value: "8080"
           {{- if .Values.dumper.tls.secret }}
           - name: "HTTP_DUMPER_TLS_CERT"
-            value: "/app/ssl/dumper.crt"
+            value: "/app/ssl/tls.crt"
           - name: "HTTP_DUMPER_TLS_KEY"
-            value: "/app/ssl/dumper.key"
+            value: "/app/ssl/tls.key"
           {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

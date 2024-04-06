@@ -4,8 +4,8 @@ dumper:
   logVerbosity: "http_dumper=info,tower_http=info"
   tls:
     # Path to a secret containing the keys. Leave empty if not using TLS.
-    # dumper.crt   -- The certificate
-    # dumper.key   -- The private key for the SSL Cert
+    # tls.crt   -- The certificate
+    # tls.key   -- The private key for the SSL Cert
     secret: ""
 
 image:
